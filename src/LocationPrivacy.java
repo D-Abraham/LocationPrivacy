@@ -39,7 +39,9 @@ public class LocationPrivacy extends JPanel {
                 cr[indix+1].setLocation(Double.parseDouble(lineSplit[2]),Double.parseDouble(lineSplit[3]));
                 indix+=2;
             }
-
+            double temp=cr[18].getY();
+            cr[18].setLocation(cr[18].getX(),cr[19].getY());
+            cr[19].setLocation(cr[19].getX(),temp);
             buffereReader.close(); //close file
         }
         catch (FileNotFoundException e){
@@ -94,34 +96,38 @@ public class LocationPrivacy extends JPanel {
             g.drawLine((int)cr[i].getX(),(int)cr[i+1].getY(),(int)cr[i+1].getX(),(int)cr[i+1].getY());
             g.drawLine((int)cr[i].getX(),(int)cr[i].getY(),(int)cr[i].getX(),(int)cr[i+1].getY());
             g.drawLine((int)cr[i+1].getX(),(int)cr[i].getY(),(int)cr[i+1].getX(),(int)cr[i+1].getY());
-
-            Point.Double midP = getMidPoint(cr[i],cr[i+1]);
-
             g.setColor(Color.red);
+            g.drawString("CR "+i/2,(int)cr[i].getX(),(int)cr[i].getY());
+            Point.Double midP = getMidPoint(cr[i],cr[i+1]);
             g.fillRect((int)midP.getX(),(int)midP.getY(),2,2);
-
         }
+
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(800, 1000);
+        return new Dimension(1100, 1100);
     }
     public static void main(String[] args) {
         LocationPrivacy lp =  new LocationPrivacy();
         lp.readDB("Users.txt", "Input-CR.txt");
+        ArrayList<Point.Double>crUsers;
+        Point.Double midP;
+        int count = 0;
+        for(int cr=0; cr<20; cr+=2){
+            System.out.println("CR "+count);
+            crUsers = lp.getUsersInRC(lp.cr[cr],lp.cr[cr+1]);
+            System.out.println("total users inside CR: "+crUsers.size()+"\nUsers coordinates: ");
+            for(int i=0; i<crUsers.size();i++){
+                System.out.println(crUsers.get(i).getX()+" - "+crUsers.get(i).getY());
+            }
+            count++;
+            midP=lp.getMidPoint(lp.cr[cr],lp.cr[cr+1]);
 
-        System.out.println("1st crUsers"+lp.cr[0].toString()+" "+lp.cr[1].toString());
-        ArrayList<Point.Double>crUsers = lp.getUsersInRC(lp.cr[0],lp.cr[1]);
-        System.out.println("total cr users: "+crUsers.size());
-        for(int i=0; i<crUsers.size();i++){
-            System.out.println(crUsers.get(i).toString());
+            System.out.println("CR MidPoint(center): "+midP.getX()+" - "+midP.getY());
+            Point.Double source = lp.getSource(crUsers,midP);
+            System.out.println("Query source "+source.getX()+" - "+source.getY());
         }
-
-        Point.Double midP = lp.getMidPoint(lp.cr[0],lp.cr[1]);
-        System.out.println("mid Point "+midP.toString());
-
-        System.out.println("Source "+lp.getSource(lp.getUsersInRC(lp.cr[0],lp.cr[1]),lp.getMidPoint(lp.cr[0],lp.cr[1])).toString());
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
