@@ -2,7 +2,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 /*
-LocationPrivacy uses the provides users xy and CR to find the query source.
+LocationPrivacy uses the provided users xy and CR to find the query source.
  */
 public class LocationPrivacy {
 
@@ -129,19 +129,5 @@ public class LocationPrivacy {
         return cr;
     }
 
-    /*
-    This method was made only because I was not sure if it was required to return query index.
-     */
-    public  int[] getSourcesIndexs(Point.Double[] users,ArrayList<Point.Double> sources){
-        int[] indexs = new int[10];
-        for(int i=0; i<sources.size(); i++){
-            for (int x=0; x<users.length; x++){
-             if((sources.get(i).getX() == users[x].getX())&&(sources.get(i).getY()==users[x].getY())){
-                 indexs[i]=x;
-             }
-            }
-        }
-        return indexs;
-    }
 
 }

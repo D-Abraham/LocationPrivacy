@@ -20,12 +20,6 @@ public class GUI extends JPanel {
             System.out.println(" Query source "+source.getX()+" - "+source.getY());
             pSources.add(source);
         }
-        int[] indexs=lp.getSourcesIndexs(lp.getUsers(),pSources);
-        System.out.println("Query source ID(index):");
-        for(int i=0; i<indexs.length;i++){
-            System.out.println(i+"- "+indexs[i]);
-        }
-        System.out.println("Note: ID(index)+2 == line # in Users.txt, because the first line is used by a text.");
     }
 
     public void paintComponent(Graphics g){
